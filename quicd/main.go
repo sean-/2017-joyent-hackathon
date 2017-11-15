@@ -25,12 +25,13 @@ func main() {
 	log.SetFlags(0)
 	logger = log
 
-	var addr, addrtls, upstream string
+	var httpAddr, httpsAddr, quicAddr, upstream string
 	var keyFile, certFile string
 	var circonusAPIKey string
 
-	flag.StringVar(&addr, "addr", ":8080", "host:port for HTTP")
-	flag.StringVar(&addrtls, "addrtls", ":8443", "host:port for HTTPS and QUIC")
+	flag.StringVar(&httpAddr, "http", ":8080", "host:port for HTTP")
+	flag.StringVar(&httpsAddr, "https", ":8443", "host:port for HTTPS")
+	flag.StringVar(&quicAddr, "quic", ":8443", "host:port for QUIC")
 	flag.StringVar(&upstream, "upstream", "", "http://host:port/ of upstream server")
 	flag.StringVar(&keyFile, "key", "", "TLS key file")
 	flag.StringVar(&certFile, "cert", "", "TLS cert file")
@@ -67,34 +68,34 @@ func main() {
 	}))
 
 	go func() {
-		if addr == "" {
+		if httpAddr == "" {
 			log.Print("HTTP disabled")
 			return
 		}
-		log.Print("HTTP enabled on ", addr)
-		if err := http.ListenAndServe(addr, nil); err != nil {
+		log.Print("HTTP enabled on ", httpAddr)
+		if err := http.ListenAndServe(httpAddr, nil); err != nil {
 			log.Fatal(err)
 		}
 	}()
 
 	go func() {
-		if addrtls == "" || certFile == "" || keyFile == "" {
+		if httpsAddr == "" || certFile == "" || keyFile == "" {
 			log.Print("HTTPS disabled")
 			return
 		}
-		log.Print("HTTPS enabled on ", addrtls)
-		if err := http.ListenAndServeTLS(addrtls, certFile, keyFile, nil); err != nil {
+		log.Print("HTTPS enabled on ", httpsAddr)
+		if err := http.ListenAndServeTLS(httpsAddr, certFile, keyFile, nil); err != nil {
 			log.Fatal(err)
 		}
 	}()
 
 	go func() {
-		if addrtls == "" || certFile == "" || keyFile == "" {
+		if quicAddr == "" || certFile == "" || keyFile == "" {
 			log.Print("QUIC disabled")
 			return
 		}
-		log.Print("QUIC enabled on ", addrtls)
-		if err := h2quic.ListenAndServeQUIC(addrtls, certFile, keyFile, nil); err != nil {
+		log.Print("QUIC enabled on ", quicAddr)
+		if err := h2quic.ListenAndServeQUIC(quicAddr, certFile, keyFile, nil); err != nil {
 			log.Fatal(err)
 		}
 	}()
