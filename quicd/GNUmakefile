@@ -26,6 +26,7 @@ release-snapshot: ## 10 Build a snapshot release
 .PHONY: clean
 clean:: ## 90 Clean target
 	rm -f quicd
+	rm -rf dist/
 
 .PHONY: help
 help:: ## 99 This help message
