@@ -8,6 +8,30 @@
   revision = "8d6ce0550041f9d97e7f15ec27ed489f8bbbb0fb"
 
 [[projects]]
+  name = "github.com/circonus-labs/circonus-gometrics"
+  packages = [".","api","api/config","checkmgr"]
+  revision = "b25d14eeef390159289ad3e8521eff3162c59685"
+  version = "v2.1.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/circonus-labs/circonusllhist"
+  packages = ["."]
+  revision = "6e85b9352cf0c2bb969831347491388bb3ae9c69"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/hashicorp/go-cleanhttp"
+  packages = ["."]
+  revision = "3573b8b52aa7b37b9358d966a898feb387f62437"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/hashicorp/go-retryablehttp"
+  packages = ["."]
+  revision = "794af36148bf63c118d6db80eb902a136b907e71"
+
+[[projects]]
   branch = "master"
   name = "github.com/hashicorp/golang-lru"
   packages = [".","simplelru"]
@@ -38,6 +62,24 @@
   revision = "d2f86524cced5186554df90d92529757d22c1cb6"
 
 [[projects]]
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
+  version = "v0.8.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/sean-/seed"
+  packages = ["."]
+  revision = "e2103e2c35297fb7e17febb81e49b312087a2372"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/tv42/httpunix"
+  packages = ["."]
+  revision = "b75d8614f926c077e48d85f1f8f7885b758c6225"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["curve25519","hkdf"]
@@ -58,6 +100,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "d0479b1944d80efd4ac9983a36245c074e99561fde2555cafb6e9eb05605fea3"
+  inputs-digest = "a75ac8f2ec2a659228e5d1ff5ab9805ea19fe1faad638bcece03555871d859a6"
   solver-name = "gps-cdcl"
   solver-version = 1
