@@ -1,3 +1,7 @@
+BIN=quicd
+
+default:: help
+
 dev:: ## 10 Build a local build
 	go build -o quicd
 
