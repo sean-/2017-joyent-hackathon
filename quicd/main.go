@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"net/http/httputil"
+	"net/url"
 
 	"github.com/lucas-clemente/quic-go/h2quic"
 )
@@ -15,7 +16,7 @@ func main() {
 	var addr, upstream string
 	var keyFile, certFile string
 	flag.StringVar(&addr, "addr", ":8080", "host:port listen address")
-	flag.StringVar(&upstream, "upstream", "", "host:port of upstream server")
+	flag.StringVar(&upstream, "upstream", "", "http://host:port/ of upstream server")
 	flag.StringVar(&keyFile, "key", "", "TLS key file")
 	flag.StringVar(&certFile, "cert", "", "TLS cert file")
 	flag.Parse()
@@ -24,14 +25,18 @@ func main() {
 		log.Fatal("no upstream address")
 	}
 
-	log.Print("Starting quicd")
-	log.Print("Forwarding to ", upstream)
-
-	handle := func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("%s %s", r.Method, r.RequestURI)
-		httputil.NewSingleHostReverseProxy(r.URL).ServeHTTP(w, r)
+	upstreamURL, err := url.Parse(upstream)
+	if err != nil {
+		log.Fatal("Invalid upstream URL: ", err)
 	}
-	http.Handle("/", http.HandlerFunc(handle))
+
+	log.Print("Starting quicd")
+	log.Print("Forwarding to ", upstreamURL)
+
+	http.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("%s %s", r.Method, r.RequestURI)
+		httputil.NewSingleHostReverseProxy(upstreamURL).ServeHTTP(w, r)
+	}))
 
 	go func() {
 		log.Print("Listening HTTP on ", addr)
