@@ -50,7 +50,7 @@ func main() {
 			if err != nil {
 				panic(err)
 			}
-			log.Info().Bytes("body", body.Bytes()).Msg("Response Body")
+			log.Info().Int("body-bytes", len(body.Bytes())).Msg("Response Body")
 			wg.Done()
 		}(addr)
 	}
