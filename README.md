@@ -4,9 +4,9 @@ Move along, nothing to see here.
 
 ## Items
 
-[ ] Setup http reverse proxy - Frank
+[X] Setup http reverse proxy - Frank
 [ ] Integrate some form of monitoring to establish a baseline - Sean
-[ ] Add QUIC server support - Sean
+[ ] Add QUIC server support - Frank
 [ ] Add Makefile to cross-compile
 [ ] Add QUIC client support
 [ ] Add node QUIC support - Trent
