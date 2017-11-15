@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"crypto/tls"
 	"flag"
 	"fmt"
 	"io"
@@ -30,8 +31,13 @@ func main() {
 
 	initLog(*logFormatFlag, *logLevelFlag)
 
+	quicTransport := &h2quic.QuicRoundTripper{
+		TLSClientConfig: &tls.Config{
+			InsecureSkipVerify: true,
+		},
+	}
 	hclient := &http.Client{
-		Transport: &h2quic.QuicRoundTripper{},
+		Transport: quicTransport,
 	}
 
 	var wg sync.WaitGroup
