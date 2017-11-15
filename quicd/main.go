@@ -13,9 +13,10 @@ import (
 func main() {
 	log.SetFlags(0)
 
-	var addr, upstream string
+	var addr, addrtls, upstream string
 	var keyFile, certFile string
-	flag.StringVar(&addr, "addr", ":8080", "host:port listen address")
+	flag.StringVar(&addr, "addr", ":8080", "host:port for HTTP")
+	flag.StringVar(&addr, "addrtls", ":8443", "host:port for HTTPS")
 	flag.StringVar(&upstream, "upstream", "", "http://host:port/ of upstream server")
 	flag.StringVar(&keyFile, "key", "", "TLS key file")
 	flag.StringVar(&certFile, "cert", "", "TLS cert file")
@@ -39,6 +40,9 @@ func main() {
 	}))
 
 	go func() {
+		if addr == "" {
+			return
+		}
 		log.Print("Listening HTTP on ", addr)
 		if err := http.ListenAndServe(addr, nil); err != nil {
 			log.Fatal(err)
@@ -46,6 +50,19 @@ func main() {
 	}()
 
 	go func() {
+		if addrtls == "" {
+			return
+		}
+		log.Print("Listening HTTPS on ", addrtls)
+		if err := http.ListenAndServeTLS(addrtls, certFile, keyFile, nil); err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	go func() {
+		if addr == "" {
+			return
+		}
 		log.Print("Listening QUIC on ", addr)
 		if err := h2quic.ListenAndServeQUIC(addr, certFile, keyFile, nil); err != nil {
 			log.Fatal(err)
