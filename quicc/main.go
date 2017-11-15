@@ -43,14 +43,13 @@ func main() {
 			if err != nil {
 				panic(err)
 			}
-			log.Info().Str("addr", addr).Str("rsp", rsp.Status).Msg("GET response")
 
 			body := &bytes.Buffer{}
 			_, err = io.Copy(body, rsp.Body)
 			if err != nil {
 				panic(err)
 			}
-			log.Info().Int("body-bytes", len(body.Bytes())).Msg("Response Body")
+			log.Info().Str("addr", addr).Str("rsp", rsp.Status).Int("body-bytes", len(body.Bytes())).Msg("GET Response")
 			wg.Done()
 		}(addr)
 	}
