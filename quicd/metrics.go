@@ -17,6 +17,8 @@ func initMetrics(circonusAPIKey string) (err error) {
 	cmc.Debug = false // set to true for debug messages
 	cmc.Log = log
 
+	cmc.CheckManager.API.TokenApp = "quicd"
+
 	// Circonus API Token key (https://login.circonus.com/user/tokens)
 	if circonusAPIKey == "" {
 		cmc.CheckManager.API.TokenKey = os.Getenv("CIRCONUS_API_TOKEN")
