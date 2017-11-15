@@ -9,7 +9,7 @@ Move along, nothing to see here.
 [X] Add HTTPS server support
 [X] Add QUIC server support
 [X] Add Makefile to cross-compile
-[ ] Add QUIC client support
+[X] Add QUIC client support
 [ ] Add node QUIC support - Trent
 [ ] Change imgapi to talk to local proxy - Trent
 [ ] Change proxy to talk to upstream manta - Trent
