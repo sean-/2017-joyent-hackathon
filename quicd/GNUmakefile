@@ -7,7 +7,7 @@ dev:: ## 10 Build a local build
 
 all:: quicd_illumos ## 10 Build all targets
 
-quicd_illumos:: ## 10 Build for Illumos
+illumos:: ## 10 Build for Illumos
 	env GOOS=solaris GOARCH=amd64 go build -o $@
 
 .PHONY: ssl-keys
@@ -41,5 +41,5 @@ BEGIN { FS = ":[:]?.*?## "; section = 10; };				\
 		printf "\n";						\
 	}								\
 	sub("^[0-9]+", "",  $$2);					\
-	printf "\033[36m%-15s\033[0m %s\n", $$1, $$2;			\
+	printf "\033[36m%-20s\033[0m %s\n", $$1, $$2;			\
 }'
