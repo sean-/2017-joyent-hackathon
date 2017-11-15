@@ -1,3 +1,6 @@
 quicd
+quicd_*
 .token.key
 dist/
+*.key
+*.pem
