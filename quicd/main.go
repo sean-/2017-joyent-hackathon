@@ -55,7 +55,7 @@ func main() {
 
 	log.Print("Starting quicd")
 
-	http.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/", metrics.TrackHTTPLatency("/", func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
 		const requestLatency = "request-latency"
 		defer func() {
@@ -72,8 +72,9 @@ func main() {
 			log.Print("HTTP disabled")
 			return
 		}
+
 		log.Print("HTTP enabled on ", httpAddr)
-		if err := http.ListenAndServe(httpAddr, nil); err != nil {
+		if err := http.ListenAndServe(httpAddr, http.DefaultServeMux); err != nil {
 			log.Fatal(err)
 		}
 	}()
@@ -84,7 +85,7 @@ func main() {
 			return
 		}
 		log.Print("HTTPS enabled on ", httpsAddr)
-		if err := http.ListenAndServeTLS(httpsAddr, certFile, keyFile, nil); err != nil {
+		if err := http.ListenAndServeTLS(httpsAddr, certFile, keyFile, http.DefaultServeMux); err != nil {
 			log.Fatal(err)
 		}
 	}()
@@ -95,7 +96,7 @@ func main() {
 			return
 		}
 		log.Print("QUIC enabled on ", quicAddr)
-		if err := h2quic.ListenAndServeQUIC(quicAddr, certFile, keyFile, nil); err != nil {
+		if err := h2quic.ListenAndServeQUIC(quicAddr, certFile, keyFile, http.DefaultServeMux); err != nil {
 			log.Fatal(err)
 		}
 	}()
@@ -117,6 +118,7 @@ func initMetrics(circonusAPIKey string) (err error) {
 	cmc.Log = log
 
 	cmc.CheckManager.API.TokenApp = "quicd"
+	cmc.CheckManager.Broker.ID = "2"
 
 	// Circonus API Token key (https://login.circonus.com/user/tokens)
 	if circonusAPIKey == "" {
