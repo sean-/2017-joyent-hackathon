@@ -7,8 +7,8 @@ dev:: ## 10 Build a local build
 
 all:: quicd_illumos ## 10 Build all targets
 
-illumos:: ## 10 Build for Illumos
-	env GOOS=solaris GOARCH=amd64 go build -o quicd_solaris_amd64
+quicd_illumos:: ## 10 Build for Illumos
+	env GOOS=solaris GOARCH=amd64 go build -o $@
 
 .PHONY: ssl-keys
 ssl-keys:: ## 10 Create SSL keys

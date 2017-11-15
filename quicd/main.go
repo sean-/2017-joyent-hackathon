@@ -30,7 +30,7 @@ func main() {
 	var circonusAPIKey string
 
 	flag.StringVar(&addr, "addr", ":8080", "host:port for HTTP")
-	flag.StringVar(&addrtls, "addrtls", ":8443", "host:port for HTTPS")
+	flag.StringVar(&addrtls, "addrtls", ":8443", "host:port for HTTPS and QUIC")
 	flag.StringVar(&upstream, "upstream", "", "http://host:port/ of upstream server")
 	flag.StringVar(&keyFile, "key", "", "TLS key file")
 	flag.StringVar(&certFile, "cert", "", "TLS cert file")
@@ -89,12 +89,12 @@ func main() {
 	}()
 
 	go func() {
-		if addr == "" || certFile == "" || keyFile == "" {
+		if addrtls == "" || certFile == "" || keyFile == "" {
 			log.Print("QUIC disabled")
 			return
 		}
-		log.Print("QUIC enabled on ", addr)
-		if err := h2quic.ListenAndServeQUIC(addr, certFile, keyFile, nil); err != nil {
+		log.Print("QUIC enabled on ", addrtls)
+		if err := h2quic.ListenAndServeQUIC(addrtls, certFile, keyFile, nil); err != nil {
 			log.Fatal(err)
 		}
 	}()
