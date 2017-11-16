@@ -1,11 +1,11 @@
 package main
 
 import (
-	"bytes"
 	"crypto/tls"
 	"flag"
 	"fmt"
 	"io"
+	"io/ioutil"
 	stdlog "log"
 	"net/http"
 	"os"
@@ -50,12 +50,12 @@ func main() {
 				panic(err)
 			}
 
-			body := &bytes.Buffer{}
+			body := ioutil.Discard
 			_, err = io.Copy(body, rsp.Body)
 			if err != nil {
 				panic(err)
 			}
-			log.Info().Str("addr", addr).Str("rsp", rsp.Status).Int("body-bytes", len(body.Bytes())).Msg("GET Response")
+			log.Info().Str("addr", addr).Str("rsp", rsp.Status).Msg("GET Response")
 			wg.Done()
 		}(addr)
 	}
