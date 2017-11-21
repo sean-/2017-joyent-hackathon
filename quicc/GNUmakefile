@@ -10,10 +10,6 @@ all:: quicc_illumos ## 10 Build all targets
 quicc_illumos:: ## 10 Build for Illumos
 	env GOOS=solaris GOARCH=amd64 go build -o $@
 
-.PHONY: ssl-keys
-ssl-keys:: ## 10 Create SSL keys
-	openssl req -subj '/CN=quicc.example.com/O=Joyent Inc./C=US' -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -keyout quicc.key -out quicc.pem
-
 .PHONY: release
 release: ## 10 Build a release
 	#goreleaser --release-notes=release_notes.md
